@@ -7,12 +7,15 @@ var PAPIRUS_HEIGHT = 270;
 var PAPIRUS_CORNER_X_RADIUS = 10;
 var PAPIRUS_CORNER_Y_RADIUS = 30;
 var PAPIRUS_LINE_HEIGHT = 30;
+var Y_GAP = PAPIRUS_LINE_HEIGHT / 2;
 var HISTOGRAM_BAR_HEIGHT = 150;
 var HISTOGRAM_BAR_WIDTH = 40;
 var HISTOGRAM_BAR_GAP = 50;
 var histogramColonWidth = HISTOGRAM_BAR_WIDTH + HISTOGRAM_BAR_GAP;
 var papirusCenterX = PAPIRUS_X + PAPIRUS_WIDTH / 2;
+var firstLineYPosition = PAPIRUS_Y + PAPIRUS_LINE_HEIGHT / 2;
 var lastLineYPosition = PAPIRUS_Y + PAPIRUS_HEIGHT - PAPIRUS_LINE_HEIGHT / 2;
+var firstBarXPosition = PAPIRUS_X + (PAPIRUS_WIDTH - 4 * HISTOGRAM_BAR_WIDTH - 3 * HISTOGRAM_BAR_GAP) / 2;
 
 var renderPapirus = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -41,10 +44,42 @@ var renderPapirus = function (ctx, x, y, color) {
   ctx.fill();
 };
 
+var getRndInteger = function (max, min) {
+  return (Math.floor(Math.random() * (max - min + 1)) + min) / 10;
+};
+
+var getRndBlueColor = function () {
+  var color = 'rgba(0, 0, 255, ' + getRndInteger(10, 4) + ')';
+  return color;
+};
+
+var getUserColor = function (name) {
+  var color = (name === 'Вы') ? 'rgba(255, 0, 0, 1)' : getRndBlueColor();
+  return color;
+};
+
+var getTextXPosition = function (barXPosition) {
+  return barXPosition + HISTOGRAM_BAR_WIDTH / 2;
+};
+
+var renderHistogramColon = function (ctx, name, time, heightPoint, barXPosition) {
+  var userTime = Math.round(time);
+  var barHeight = userTime * heightPoint;
+  var barYPosition = lastLineYPosition - Y_GAP - barHeight;
+  var scoreLineYPosition = barYPosition - Y_GAP;
+  var textXPosition = getTextXPosition(barXPosition);
+
+  ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+  ctx.fillText(userTime, textXPosition, scoreLineYPosition);
+  ctx.fillText(name, textXPosition, lastLineYPosition);
+  ctx.fillStyle = getUserColor(name);
+  ctx.fillRect(barXPosition, barYPosition, HISTOGRAM_BAR_WIDTH, barHeight);
+
+};
+
 window.renderStatistics = function (ctx, names, times) {
-  var firstLineYPosition = PAPIRUS_Y + PAPIRUS_LINE_HEIGHT / 2;
   var heightPoint = HISTOGRAM_BAR_HEIGHT / Math.max.apply(null, times);
-  var histogramXPosition = PAPIRUS_X + (PAPIRUS_WIDTH - 4 * HISTOGRAM_BAR_WIDTH - 3 * HISTOGRAM_BAR_GAP) / 2;
+  var barXPosition = firstBarXPosition;
 
   renderPapirus(ctx, PAPIRUS_X + 10, PAPIRUS_Y + 10, 'rgba(0, 0, 0, 0.7)');
   renderPapirus(ctx, PAPIRUS_X, PAPIRUS_Y, 'rgba(255, 255, 255, 1)');
@@ -54,19 +89,10 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.textBaseline = 'middle';
   ctx.font = '16px PT Mono';
   ctx.strokeText('Ура вы победили!', papirusCenterX, firstLineYPosition);
-  firstLineYPosition += PAPIRUS_LINE_HEIGHT;
-  ctx.fillText('Список результатов:', papirusCenterX, firstLineYPosition);
+  ctx.fillText('Список результатов:', papirusCenterX, firstLineYPosition + PAPIRUS_LINE_HEIGHT);
 
   for (var i = 0; i < names.length; i++) {
-    var colonHeight = times[i] * heightPoint;
-    var scoreLineYPosition = lastLineYPosition - colonHeight - PAPIRUS_LINE_HEIGHT;
-    var colorString = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, ' + (Math.floor(Math.random() * 11)) / 10 + ')';
-    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-    ctx.fillText(names[i], histogramXPosition + HISTOGRAM_BAR_WIDTH / 2, lastLineYPosition);
-    ctx.fillText(Math.round(times[i]), histogramXPosition + HISTOGRAM_BAR_WIDTH / 2, scoreLineYPosition);
-    scoreLineYPosition += PAPIRUS_LINE_HEIGHT / 2;
-    ctx.fillStyle = colorString;
-    ctx.fillRect(histogramXPosition, scoreLineYPosition, HISTOGRAM_BAR_WIDTH, times[i] * heightPoint);
-    histogramXPosition += histogramColonWidth;
+    renderHistogramColon(ctx, names[i], times[i], heightPoint, barXPosition);
+    barXPosition += histogramColonWidth;
   }
 };
