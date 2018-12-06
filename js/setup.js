@@ -1,0 +1,71 @@
+'use strict';
+var setupBlock = document.querySelector('.setup');
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var setupSimilarListBlock = document.querySelector('.setup-similar-list');
+var setupSimilarBlock = document.querySelector('.setup-similar');
+
+var createCharacters = function (num) {
+  var characters = [];
+  var names = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+  var surnames = ['да Марья', 'Верон', 'Мирабелла', 'ВальцОнопко', 'Топольницкая', 'НионгоИрвинг'];
+  var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+  var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
+
+  var getRndInteger = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  var shuffleArray = function (initialArray) {
+    var newArray = initialArray.slice();
+    for (var i = newArray.length - 1; i >= 0; i--) {
+      var rndNum = getRndInteger(0, i);
+      var temp = newArray[i];
+      newArray[i] = newArray[rndNum];
+      newArray[rndNum] = temp;
+    }
+    return newArray;
+  };
+
+  var getCharacterName = function () {
+    var name = [names[getRndInteger(0, names.length - 1)], surnames[getRndInteger(0, surnames.length - 1)]];
+    return shuffleArray(name).join(' ');
+  };
+
+  for (var i = 0; i < num; i++) {
+    characters[i] = {
+      name: getCharacterName(),
+      coatColor: coatColors[getRndInteger(0, coatColors.length - 1)],
+      eyesColor: eyesColors[getRndInteger(0, eyesColors.length - 1)]
+    };
+  }
+  return characters;
+};
+
+var createWizardBlock = function (wizard) {
+  var wizardBlock = similarWizardTemplate.cloneNode(true);
+  var setupSimilarLabel = wizardBlock.querySelector('.setup-similar-label');
+  var wizardCoatBlock = wizardBlock.querySelector('.wizard-coat');
+  var wizardEyesBlock = wizardBlock.querySelector('.wizard-eyes');
+
+  setupSimilarLabel.textContent = wizard.name;
+  wizardCoatBlock.style.fill = wizard.coatColor;
+  wizardEyesBlock.style.fill = wizard.eyesColor;
+
+  return wizardBlock;
+};
+
+var fillSetupSimilarListBlock = function (wizards) {
+  var documentFragment = document.createDocumentFragment();
+  for (var i = 0; i < wizards.length; i++) {
+    documentFragment.appendChild(createWizardBlock(wizards[i]));
+  }
+  return documentFragment;
+};
+
+setupBlock.classList.remove('hidden');
+
+var wizards = createCharacters(5);
+
+setupSimilarListBlock.appendChild(fillSetupSimilarListBlock(wizards));
+
+setupSimilarBlock.classList.remove('hidden');
