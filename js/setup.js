@@ -6,8 +6,8 @@ var setupSimilarBlock = document.querySelector('.setup-similar');
 
 var createCharacters = function (num) {
   var characters = [];
-  var names = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var surnames = ['да Марья', 'Верон', 'Мирабелла', 'ВальцОнопко', 'Топольницкая', 'НионгоИрвинг'];
+  var NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+  var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'ВальцОнопко', 'Топольницкая', 'НионгоИрвинг'];
   var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 
@@ -27,8 +27,8 @@ var createCharacters = function (num) {
   };
 
   var getCharacterName = function () {
-    var name = [names[getRndInteger(0, names.length - 1)], surnames[getRndInteger(0, surnames.length - 1)]];
-    return shuffleArray(name).join(' ');
+    var newArray = [NAMES[getRndInteger(0, NAMES.length - 1)], SURNAMES[getRndInteger(0, SURNAMES.length - 1)]];
+    return shuffleArray(newArray).join(' ');
   };
 
   for (var i = 0; i < num; i++) {
