@@ -5,11 +5,11 @@ var setupSimilarListBlock = document.querySelector('.setup-similar-list');
 var setupSimilarBlock = document.querySelector('.setup-similar');
 
 var createCharacters = function (num) {
-  var characters = [];
   var NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
   var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'ВальцОнопко', 'Топольницкая', 'НионгоИрвинг'];
-  var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
+  var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+  var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+  var characters = [];
 
   var getRndInteger = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -34,8 +34,8 @@ var createCharacters = function (num) {
   for (var i = 0; i < num; i++) {
     characters[i] = {
       name: getCharacterName(),
-      coatColor: coatColors[getRndInteger(0, coatColors.length - 1)],
-      eyesColor: eyesColors[getRndInteger(0, eyesColors.length - 1)]
+      coatColor: COAT_COLORS[getRndInteger(0, COAT_COLORS.length - 1)],
+      eyesColor: EYES_COLORS[getRndInteger(0, EYES_COLORS.length - 1)]
     };
   }
   return characters;
