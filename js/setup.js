@@ -27,8 +27,8 @@ var createCharacters = function (num) {
   };
 
   var getCharacterName = function () {
-    var newArray = [NAMES[getRndInteger(0, NAMES.length - 1)], SURNAMES[getRndInteger(0, SURNAMES.length - 1)]];
-    return shuffleArray(newArray).join(' ');
+    var names = [NAMES[getRndInteger(0, NAMES.length - 1)], SURNAMES[getRndInteger(0, SURNAMES.length - 1)]];
+    return shuffleArray(names).join(' ');
   };
 
   for (var i = 0; i < num; i++) {
