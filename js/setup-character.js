@@ -36,6 +36,7 @@
     } else {
       styleObj.element.style.fill = newColor;
     }
+    styleObj.inputElement.value = newColor;
   };
 
   setupWizardCoat.addEventListener('click', function () {

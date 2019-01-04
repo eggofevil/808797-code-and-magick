@@ -12,8 +12,8 @@
 
   var shuffleArray = function (elements) {
     elements = elements.slice();
-    var i = elements.length - 1;
-    while (i--) {
+    var i = elements.length;
+    while (--i) {
       var randomIndex = getRandomInteger(0, i);
       var temp = elements[i];
       elements[i] = elements[randomIndex];
