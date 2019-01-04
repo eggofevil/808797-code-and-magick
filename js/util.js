@@ -11,6 +11,9 @@
   };
 
   var shuffleArray = function (elements) {
+    if (elements.length <= 1) {
+      return elements;
+    }
     elements = elements.slice();
     var i = elements.length;
     while (--i) {
